@@ -1,7 +1,7 @@
 # This rule is not used by the project kubeflow-coach itself.
 # It is provided to allow the cluster admin to help manage permissions for users.
 #
-# Grants permissions to create, update, and delete resources within the coach.coach.kubeflow.io.
+# Grants permissions to create, update, and delete resources within the coach.kubeflow.io.
 # This role is intended for users who need to manage these resources
 # but should not control RBAC or manage permissions for others.
 
@@ -14,7 +14,7 @@ metadata:
   name: trainjob-editor-role
 rules:
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - trainjobs
   verbs:
@@ -26,7 +26,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - trainjobs/status
   verbs:

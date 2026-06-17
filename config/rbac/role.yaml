@@ -17,7 +17,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - clustertrainingruntimes
   verbs:
@@ -25,7 +25,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - trainjobs
   verbs:
@@ -37,13 +37,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - trainjobs/finalizers
   verbs:
   - update
 - apiGroups:
-  - coach.coach.kubeflow.io
+  - coach.kubeflow.io
   resources:
   - trainjobs/status
   verbs:

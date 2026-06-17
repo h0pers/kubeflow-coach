@@ -3,7 +3,7 @@
 # and allow the plugins properly work.
 # More info: https://book.kubebuilder.io/reference/project-config.html
 cliVersion: 4.15.0
-domain: coach.kubeflow.io
+domain: kubeflow.io
 layout:
 - go.kubebuilder.io/v4
 projectName: kubeflow-coach
@@ -13,7 +13,7 @@ resources:
     crdVersion: v1
     namespaced: true
   controller: true
-  domain: coach.kubeflow.io
+  domain: kubeflow.io
   group: coach
   kind: TrainJob
   path: kubeflow-coach/api/v1alpha1
@@ -21,7 +21,7 @@ resources:
 - api:
     crdVersion: v1
     namespaced: true
-  domain: coach.kubeflow.io
+  domain: kubeflow.io
   group: coach
   kind: ClusterTrainingRuntime
   path: kubeflow-coach/api/v1alpha1

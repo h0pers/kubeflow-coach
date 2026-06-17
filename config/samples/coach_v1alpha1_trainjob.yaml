@@ -1,4 +1,4 @@
-apiVersion: coach.coach.kubeflow.io/v1alpha1
+apiVersion: coach.kubeflow.io/v1alpha1
 kind: TrainJob
 metadata:
   name: my-training

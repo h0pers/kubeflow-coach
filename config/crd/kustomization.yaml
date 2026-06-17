@@ -2,8 +2,8 @@
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
 resources:
-- bases/coach.coach.kubeflow.io_trainjobs.yaml
-- bases/coach.coach.kubeflow.io_clustertrainingruntimes.yaml
+- bases/coach.kubeflow.io_trainjobs.yaml
+- bases/coach.kubeflow.io_clustertrainingruntimes.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

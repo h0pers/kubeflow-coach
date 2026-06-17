@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.21.0
-  name: clustertrainingruntimes.coach.coach.kubeflow.io
+  name: clustertrainingruntimes.coach.kubeflow.io
 spec:
-  group: coach.coach.kubeflow.io
+  group: coach.kubeflow.io
   names:
     kind: ClusterTrainingRuntime
     listKind: ClusterTrainingRuntimeList

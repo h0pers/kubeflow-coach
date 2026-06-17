@@ -39,10 +39,10 @@ type TrainJobReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=coach.coach.kubeflow.io,resources=trainjobs,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=coach.coach.kubeflow.io,resources=trainjobs/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=coach.coach.kubeflow.io,resources=trainjobs/finalizers,verbs=update
-// +kubebuilder:rbac:groups=coach.coach.kubeflow.io,resources=clustertrainingruntimes,verbs=get;list;watch
+// +kubebuilder:rbac:groups=coach.kubeflow.io,resources=trainjobs,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=coach.kubeflow.io,resources=trainjobs/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=coach.kubeflow.io,resources=trainjobs/finalizers,verbs=update
+// +kubebuilder:rbac:groups=coach.kubeflow.io,resources=clustertrainingruntimes,verbs=get;list;watch
 // +kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch;create;update;patch;delete
 
 func (r *TrainJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {

@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.21.0
-  name: trainjobs.coach.coach.kubeflow.io
+  name: trainjobs.coach.kubeflow.io
 spec:
-  group: coach.coach.kubeflow.io
+  group: coach.kubeflow.io
   names:
     kind: TrainJob
     listKind: TrainJobList
