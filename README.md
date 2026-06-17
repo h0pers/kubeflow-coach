@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo.png" alt="Kubeflow Coach logo" width="200">
+</p>
+
 # Kubeflow Coach
 
 Educational simplified clone of [Kubeflow Trainer v2](https://github.com/kubeflow/trainer) for learning Kubernetes operator development.
