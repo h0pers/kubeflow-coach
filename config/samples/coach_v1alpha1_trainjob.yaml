@@ -1,0 +1,8 @@
+apiVersion: coach.coach.kubeflow.io/v1alpha1
+kind: TrainJob
+metadata:
+  name: my-training
+spec:
+  runtimeRef:
+    name: simple-training
+  command: ["sh", "-c", "echo 'Custom training script' && sleep 5 && echo 'Finished'"]

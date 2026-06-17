@@ -1,0 +1,142 @@
+version: "3"
+
+vars:
+  IMG: '{{.IMG | default "controller:latest"}}'
+  LOCALBIN: '{{.ROOT_DIR}}/bin'
+  CONTROLLER_GEN: '{{.LOCALBIN}}/controller-gen'
+  KUSTOMIZE: '{{.LOCALBIN}}/kustomize'
+  ENVTEST: '{{.LOCALBIN}}/setup-envtest'
+  GOLANGCI_LINT: '{{.LOCALBIN}}/golangci-lint'
+  CONTROLLER_TOOLS_VERSION: v0.21.0
+  KUSTOMIZE_VERSION: v5.8.1
+  GOLANGCI_LINT_VERSION: v2.12.2
+  CONTAINER_TOOL: '{{.CONTAINER_TOOL | default "docker"}}'
+
+tasks:
+  default:
+    deps: [build]
+
+  generate:
+    desc: Generate DeepCopy methods from API types
+    deps: [controller-gen]
+    cmds:
+      - '{{.CONTROLLER_GEN}} object:headerFile="hack/boilerplate.go.txt",year={{now | date "2006"}} paths="./..."'
+
+  manifests:
+    desc: Generate CRD, RBAC, and webhook manifests
+    deps: [controller-gen]
+    cmds:
+      - '{{.CONTROLLER_GEN}} rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases'
+
+  fmt:
+    desc: Run go fmt
+    cmds:
+      - go fmt ./...
+
+  vet:
+    desc: Run go vet
+    cmds:
+      - go vet ./...
+
+  build:
+    desc: Build the operator binary
+    deps: [manifests, generate, fmt, vet]
+    cmds:
+      - go build -o bin/manager cmd/main.go
+
+  run:
+    desc: Run the controller locally
+    deps: [manifests, generate, fmt, vet]
+    cmds:
+      - go run ./cmd/main.go
+
+  test:
+    desc: Run unit and integration tests
+    deps: [manifests, generate, fmt, vet, setup-envtest]
+    cmds:
+      - >-
+        KUBEBUILDER_ASSETS="$({{.ENVTEST}} use
+        $(go list -m -f '{{`{{.Version}}`}}' k8s.io/api | sed -E 's/^v?[0-9]+\.([0-9]+).*/1.\1/')
+        --bin-dir {{.LOCALBIN}} -p path)"
+        go test $(go list ./... | grep -v /e2e) -coverprofile cover.out
+
+  lint:
+    desc: Run golangci-lint
+    deps: [golangci-lint]
+    cmds:
+      - '{{.GOLANGCI_LINT}} run'
+
+  lint-fix:
+    desc: Run golangci-lint with auto-fix
+    deps: [golangci-lint]
+    cmds:
+      - '{{.GOLANGCI_LINT}} run --fix'
+
+  install:
+    desc: Install CRDs into the current cluster
+    deps: [manifests, kustomize]
+    cmds:
+      - '{{.KUSTOMIZE}} build config/crd | kubectl apply --server-side -f -'
+
+  uninstall:
+    desc: Uninstall CRDs from the current cluster
+    deps: [manifests, kustomize]
+    cmds:
+      - '{{.KUSTOMIZE}} build config/crd | kubectl delete --ignore-not-found -f -'
+
+  deploy:
+    desc: Deploy the controller to the current cluster
+    deps: [manifests, kustomize]
+    cmds:
+      - cd config/manager && {{.KUSTOMIZE}} edit set image controller={{.IMG}}
+      - '{{.KUSTOMIZE}} build config/default | kubectl apply -f -'
+
+  undeploy:
+    desc: Remove the controller from the current cluster
+    deps: [kustomize]
+    cmds:
+      - '{{.KUSTOMIZE}} build config/default | kubectl delete --ignore-not-found -f -'
+
+  docker-build:
+    desc: Build the container image
+    cmds:
+      - '{{.CONTAINER_TOOL}} build -t {{.IMG}} .'
+
+  docker-push:
+    desc: Push the container image
+    cmds:
+      - '{{.CONTAINER_TOOL}} push {{.IMG}}'
+
+  controller-gen:
+    internal: true
+    status:
+      - test -f {{.CONTROLLER_GEN}}
+    cmds:
+      - mkdir -p {{.LOCALBIN}}
+      - GOBIN={{.LOCALBIN}} go install sigs.k8s.io/controller-tools/cmd/controller-gen@{{.CONTROLLER_TOOLS_VERSION}}
+
+  kustomize:
+    internal: true
+    status:
+      - test -f {{.KUSTOMIZE}}
+    cmds:
+      - mkdir -p {{.LOCALBIN}}
+      - GOBIN={{.LOCALBIN}} go install sigs.k8s.io/kustomize/kustomize/v5@{{.KUSTOMIZE_VERSION}}
+
+  setup-envtest:
+    internal: true
+    status:
+      - test -f {{.ENVTEST}}
+    cmds:
+      - mkdir -p {{.LOCALBIN}}
+      - >-
+        GOBIN={{.LOCALBIN}} go install
+        sigs.k8s.io/controller-runtime/tools/setup-envtest@$(go list -m -f '{{`{{.Version}}`}}' sigs.k8s.io/controller-runtime)
+
+  golangci-lint:
+    internal: true
+    status:
+      - test -f {{.GOLANGCI_LINT}}
+    cmds:
+      - mkdir -p {{.LOCALBIN}}
+      - GOBIN={{.LOCALBIN}} go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@{{.GOLANGCI_LINT_VERSION}}

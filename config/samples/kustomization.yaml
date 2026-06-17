@@ -1,0 +1,5 @@
+## Append samples of your project ##
+resources:
+- coach_v1alpha1_trainjob.yaml
+- coach_v1alpha1_clustertrainingruntime.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

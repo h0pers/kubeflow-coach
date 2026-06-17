@@ -1,0 +1,52 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - coach.coach.kubeflow.io
+  resources:
+  - clustertrainingruntimes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - coach.coach.kubeflow.io
+  resources:
+  - trainjobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - coach.coach.kubeflow.io
+  resources:
+  - trainjobs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - coach.coach.kubeflow.io
+  resources:
+  - trainjobs/status
+  verbs:
+  - get
+  - patch
+  - update
