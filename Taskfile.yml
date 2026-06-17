@@ -72,6 +72,18 @@ tasks:
     cmds:
       - '{{.GOLANGCI_LINT}} run --fix'
 
+  status:
+    desc: Show TrainJobs, Jobs, and Pods
+    cmds:
+      - kubectl get trainjobs,jobs,pods
+
+  restart:
+    desc: Delete and re-apply sample resources
+    deps: [kustomize]
+    cmds:
+      - kubectl delete -k config/samples/ --ignore-not-found
+      - kubectl apply -k config/samples/
+
   install:
     desc: Install CRDs into the current cluster
     deps: [manifests, kustomize]
