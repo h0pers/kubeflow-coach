@@ -103,7 +103,7 @@ task lint-fix          # Run golangci-lint with auto-fix
 # Local development
 task install           # Apply CRDs to the current cluster
 task run               # Run controller locally (outside cluster)
-kubectl apply -f config/samples/   # Create sample resources
+kubectl apply -k config/samples/   # Create sample resources (uses kustomize)
 
 # Cluster deployment
 task deploy IMG=kubeflow-coach:dev    # Deploy operator to cluster

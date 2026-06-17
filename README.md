@@ -26,7 +26,7 @@ task install
 task run
 
 # In another terminal, create sample resources
-kubectl apply -f config/samples/
+kubectl apply -k config/samples/
 ```
 
 ## Development Commands
